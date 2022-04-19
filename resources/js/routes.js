@@ -1,17 +1,23 @@
 import {createRouter, createWebHistory} from "vue-router";
-import ExampleComponent from "./components/ExampleComponent.vue";
 import Bookables from "./bookables/Bookables.vue"
+import Bookable from "./bookable/Bookable.vue"
+import Home from "./home/Home.vue"
 
 const routes = [
     {
         path: "/",
-        component: ExampleComponent,
+        component: Home,
         name: "Home"
     },
     {
         path: "/bookables",
         component: Bookables,
         name: "Bookables",
+    },
+    {
+        path: "/bookables/:id",
+        component: Bookable,
+        name: "Bookable",
     },
 ];
 
