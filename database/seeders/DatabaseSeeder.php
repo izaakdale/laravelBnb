@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Bookable;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,7 +14,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            BookableSeeder::class,
+            BookablesTableSeeder::class,
+            BookingsTableSeeder::class,
+            ReviewsTableSeeder::class,
         ]);
     }
 }
