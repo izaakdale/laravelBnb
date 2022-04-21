@@ -15,6 +15,7 @@
                     </div>
                 </div>
             </div>
+        <review-list></review-list>
         </div>
         <div class="col-md-4 pb-4">
             <availability></availability>
@@ -24,10 +25,12 @@
 
 <script>
 import Availability from "./Availability.vue"
+import ReviewList from "./ReviewList.vue"
 
 export default {
     components: {
         Availability,
+        ReviewList,
     },
     data() {
         return {
