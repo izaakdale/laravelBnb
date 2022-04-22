@@ -9,6 +9,7 @@ const app = createApp({
         "index" : Index,
     },
 });
+// adding here to allow access appwide
 app.component("star-rating", StarRating);
 app.use(router);
 app.config.devtools = true;

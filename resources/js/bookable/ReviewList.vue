@@ -12,7 +12,7 @@
                         User name
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
-                        <star-rating :rating="review.rating"></star-rating>
+                        <star-rating :rating="review.rating" class="align-items-center fa-lg"></star-rating>
                     </div>
                 </div>
                 <div class="row">
