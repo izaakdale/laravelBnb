@@ -19,7 +19,7 @@ class ReviewFactory extends Factory
     public function definition()
     {
         return [
-            'rating' => random_int(0,5),
+            'rating' => random_int(1,5),
             'id' => Str::uuid(),
             'content' => $this->faker->paragraph(5, true),
             'created_at' => Carbon::instance($this->faker->dateTimeBetween('-1year', 'now')),

@@ -35,7 +35,8 @@ export default {
     data() {
         return {
             bookable : null,
-            loading : false
+            loading : false,
+            avgRating: null,
         }
     },
     created(){
@@ -44,6 +45,11 @@ export default {
             this.bookable = response.data.data;
             this.loading = false;
         });
+    },
+    methods : {
+        avgRating() {
+            return 9;
+        }
     }
 }
 </script>

@@ -12,7 +12,7 @@
                         User name
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
-                        {{ review.rating }}/5
+                        <star-rating :rating="review.rating"></star-rating>
                     </div>
                 </div>
                 <div class="row">
@@ -51,7 +51,6 @@ export default {
     created() {
         this.loading = true;
         const p = axios.get(`/api/bookables/${this.bookableId}/reviews`).then(response => {
-            console.log('Hitting');
             this.reviews = response.data.data;
             this.loading = false;
         });
