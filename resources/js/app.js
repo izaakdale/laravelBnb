@@ -8,6 +8,6 @@ const app = createApp({
         "index" : Index
     },
 });
-app.use(router)
+app.use(router);
 app.config.devtools = true;
 app.mount('#app')

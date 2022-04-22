@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -21,6 +22,7 @@ class ReviewFactory extends Factory
             'rating' => random_int(0,5),
             'id' => Str::uuid(),
             'content' => $this->faker->paragraph(5, true),
+            'created_at' => Carbon::instance($this->faker->dateTimeBetween('-1year', 'now')),
         ];
     }
 }

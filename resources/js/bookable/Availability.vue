@@ -3,10 +3,10 @@
         <h6 class="text-uppercase text-secondary font-weight-bolder">
             Availability checker
         </h6>
-        <h8>
+        <h6>
             <span v-if="isAvailable" class="text-success">Available for booking</span>
             <span v-if="notAvailable" class="text-danger">Listing not available for selected dates</span>
-        </h8>
+        </h6>
         <div class="form row">
             <div class="form-group col-md-6">
                 <label for="from">From</label>
@@ -39,6 +39,9 @@
 
 <script>
 export default {
+    props: {
+        bookableId: String,
+    },
     data() {
         return {
             from: null,
@@ -52,7 +55,7 @@ export default {
         check(){
             this.loading = true;
             this.status = null;
-            axios.get(`/api/bookables/${this.$route.params.id}/availability?from=${this.from}&to=${this.to}`)
+            axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
             .then(response => {
                 this.status = response.status;
             })
