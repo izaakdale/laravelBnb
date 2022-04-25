@@ -3,7 +3,8 @@
         <i class="fa-solid fa-star" 
         v-for="star in fullStars" 
         :key="'full' + star"
-        @click="$emit('rating:changed', star)"
+        :value="modelValue"
+        @click="$emit('update:modelValue', star)"
         ></i>
 
         <i class="fa-solid fa-star-half-stroke" v-if="halfStars"></i>
@@ -11,19 +12,20 @@
         <i class="fa-regular fa-star" 
         v-for="star in emptyStars" 
         :key="'empty' + star"
-        @click="$emit('rating:changed', fullStars + star)"
+        :value="modelValue"
+        @click="$emit('update:modelValue', fullStars + star)"
         ></i>
     </div>
 </template>
 
 <script>
 export default {
-    props :{
-        rating: Number,
-    },
+    props: ['modelValue'],
+    emits: ['update:modelValue'],
+
     computed: {
         halfCeil(){
-            return Math.ceil(this.rating * 2) / 2;
+            return Math.ceil(this.modelValue * 2) / 2;
         },
         fullStars(){
             return Math.floor(this.halfCeil);
@@ -32,7 +34,7 @@ export default {
             return (this.halfCeil) % 1 != 0;
         },
         emptyStars(){
-            return 5-Math.ceil(this.rating);
+            return 5-Math.ceil(this.modelValue);
         }
     },
 }

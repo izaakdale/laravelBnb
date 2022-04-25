@@ -23168,12 +23168,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {
-    rating: Number
-  },
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
   computed: {
     halfCeil: function halfCeil() {
-      return Math.ceil(this.rating * 2) / 2;
+      return Math.ceil(this.modelValue * 2) / 2;
     },
     fullStars: function fullStars() {
       return Math.floor(this.halfCeil);
@@ -23182,7 +23181,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.halfCeil % 1 != 0;
     },
     emptyStars: function emptyStars() {
-      return 5 - Math.ceil(this.rating);
+      return 5 - Math.ceil(this.modelValue);
     }
   }
 });
@@ -23694,12 +23693,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_star_rating = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("star-rating");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_star_rating, {
-    rating: $data.review.rating,
     "class": "fa-3x",
-    "onRating:changed": $options.onRatingChanged
+    modelValue: $data.review.rating,
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.review.rating = $event;
+    })
   }, null, 8
   /* PROPS */
-  , ["rating", "onRating:changed"])]), _hoisted_3, _hoisted_4]);
+  , ["modelValue"])]), _hoisted_3, _hoisted_4]);
 }
 
 /***/ }),
@@ -23720,19 +23721,20 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   "class": "d-flex"
 };
-var _hoisted_2 = ["onClick"];
+var _hoisted_2 = ["value", "onClick"];
 var _hoisted_3 = {
   key: 0,
   "class": "fa-solid fa-star-half-stroke"
 };
-var _hoisted_4 = ["onClick"];
+var _hoisted_4 = ["value", "onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.fullStars, function (star) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", {
       "class": "fa-solid fa-star",
       key: 'full' + star,
+      value: $props.modelValue,
       onClick: function onClick($event) {
-        return _ctx.$emit('rating:changed', star);
+        return _ctx.$emit('update:modelValue', star);
       }
     }, null, 8
     /* PROPS */
@@ -23743,8 +23745,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("i", {
       "class": "fa-regular fa-star",
       key: 'empty' + star,
+      value: $props.modelValue,
       onClick: function onClick($event) {
-        return _ctx.$emit('rating:changed', $options.fullStars + star);
+        return _ctx.$emit('update:modelValue', $options.fullStars + star);
       }
     }, null, 8
     /* PROPS */
