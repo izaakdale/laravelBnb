@@ -36,7 +36,6 @@ export default {
         return {
             bookable : null,
             loading : false,
-            avgRating: null,
         }
     },
     created(){
@@ -46,10 +45,5 @@ export default {
             this.loading = false;
         });
     },
-    methods : {
-        avgRating() {
-            return 9;
-        }
-    }
 }
 </script>

@@ -1,8 +1,18 @@
 <template>
     <div class="d-flex">
-        <i class="fa-solid fa-star" v-for="(i, index) in fullStars" :key="index"></i>
+        <i class="fa-solid fa-star" 
+        v-for="star in fullStars" 
+        :key="'full' + star"
+        @click="$emit('rating:changed', star)"
+        ></i>
+
         <i class="fa-solid fa-star-half-stroke" v-if="halfStars"></i>
-        <i class="fa-regular fa-star" v-for="(i, index) in emptyStars" :key="index"></i>
+
+        <i class="fa-regular fa-star" 
+        v-for="star in emptyStars" 
+        :key="'empty' + star"
+        @click="$emit('rating:changed', fullStars + star)"
+        ></i>
     </div>
 </template>
 
