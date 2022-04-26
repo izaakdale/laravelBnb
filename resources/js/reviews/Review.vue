@@ -40,6 +40,7 @@ export default {
             },
             existingReview: null,
             loading: false,
+            booking: null,
         }
     },
     methods: {
@@ -51,16 +52,30 @@ export default {
         this.loading = true;
         const p = axios.get(`/api/reviews/${this.$route.params.id}`).then(response => {
             this.existingReview = response.data.data;
-        })
-        .catch(error => {
-
-        })
-        .then(() => this.loading = false);
+            this.loading = false;
+        }).catch(error => {
+            return axios.get(`/api/bookingByReview/${this.$route.params.id}`).then(response => {
+                this.booking = response.data.data;
+            });
+            // // will probably want to catch this, here we have the case where an invalid reviewKey has been entered
+            // // which means booking cannot be found/doesnt exist. Causes not stop loading
+            // .catch(error => {
+            //     this.booking = null;
+            // });
+        }).then(() => {
+            this.loading = false;
+        });
     },
     computed: {
-        alreadyReviewed(){
+        hasReview(){
             return this.existingReview != null;
         },
+        hasBooking(){
+            return this.booking != null;
+        },
+        alreadyReviewed(){
+            return this.hasReview || !this.booking;
+        }
     }
 }
 </script>
