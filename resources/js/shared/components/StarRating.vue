@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex">
+    <div class="d-flex star-review">
         <i class="fa-solid fa-star" 
         v-for="star in fullStars" 
         :key="'full' + star"
@@ -39,3 +39,11 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+
+    .star-review{
+        text-shadow: 3px 3px 8px #bdbdbd;
+    }
+
+</style>

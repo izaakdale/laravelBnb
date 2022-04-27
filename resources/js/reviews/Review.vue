@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row" v-if="error">Unspecified error occurred.</div>
+    <fatal-error v-if="error"></fatal-error>
     <div class="row" v-else>
       <div :class="[{ 'col-md-8': twoColumns }, { 'd-md-12': oneColumn }]">
         <div v-if="loading">loading...</div>
@@ -10,13 +10,13 @@
           </div>
           <div v-else>
             <div class="form-group">
-              <label class="text-muted" for="">Select Star Rating</label>
-              <star-rating class="fa-3x" v-model="review.rating"></star-rating>
+              <!-- <label class="text-muted" for="">Select Star Rating</label> -->
+              <star-rating class="fa-3x mb-3" v-model="review.rating"></star-rating>
             </div>
             <div class="form-group">
-              <label for="content" class="text-muted"
+              <!-- <label for="content" class="text-muted"
                 >Describe your experience</label
-              >
+              > -->
               <textarea
                 name="content"
                 cols="30"
@@ -63,8 +63,9 @@
 <script>
 import { is404 } from "../shared/utils/response";
 import StarRating from "../shared/components/StarRating.vue";
+import FatalError from "../shared/components/FatalError.vue";
 export default {
-  components: { StarRating },
+  components: { StarRating, FatalError },
   data() {
     return {
       review: {
