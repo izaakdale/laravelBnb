@@ -10,25 +10,27 @@
           </div>
           <div v-else>
             <div class="form-group">
-              <!-- <label class="text-muted" for="">Select Star Rating</label> -->
               <star-rating class="fa-3x mb-3" v-model="review.rating"></star-rating>
             </div>
             <div class="form-group">
-              <!-- <label for="content" class="text-muted"
-                >Describe your experience</label
-              > -->
               <textarea
                 name="content"
                 cols="30"
                 rows="10"
                 class="form-control"
                 v-model="review.content"
+                :class="[{'is-invalid': errorFor('content')}]"
               ></textarea>
+              <v-errors :errors="errorFor('content')"></v-errors>
+              <!-- <div class="invalid-feedback"
+                v-for="(error, index) in errorFor('content')" 
+                :key="'content' + index"
+              >{{ error }}</div> -->
             </div>
             <button
-              class="btn btn-md btn-primary col-md-12"
+              class="btn btn-md btn-primary col-md-12 mt-4"
               @click.prevent="submit"
-              :disabled="loading"
+              :disabled="sending"
             >
               Submit
             </button>
@@ -36,7 +38,7 @@
         </div>
       </div>
       <div :class="[{ 'col-md-4': twoColumns }, { 'd-none': oneColumn }]">
-        <div v-if="loading">loading..</div>
+        <div v-if="sending">loading..</div>
         <div v-else>
           <div v-if="hasBooking" class="card">
             <div class="card-body">
@@ -61,11 +63,11 @@
 </template>
 
 <script>
-import { is404 } from "../shared/utils/response";
-import StarRating from "../shared/components/StarRating.vue";
-import FatalError from "../shared/components/FatalError.vue";
+import { is404, is422 } from "../shared/utils/response";
+import validationErrors from "./../shared/mixins/validationErrors.js"
+
 export default {
-  components: { StarRating, FatalError },
+  mixins: [validationErrors],
   data() {
     return {
       review: {
@@ -74,9 +76,10 @@ export default {
         content: null,
       },
       existingReview: null,
-      loading: false,
       booking: null,
       error: false,
+      sending: false,
+      loading: false,
     };
   },
   methods: {
@@ -84,17 +87,27 @@ export default {
       this.review.rating = rating;
     },
     submit() {
-      this.loading = true;
+      this.errors = null;
+      this.sending = true;
       const p = axios
         .post(`/api/reviews/`, this.review)
         .then((response) => {
           console.log(response);
         })
         .catch((error) => {
-          this.error = true;
+            if(is422(error)){
+                const errors = error.response.data.errors;
+
+                if(errors["content"] && 1 === _.size(errors) )
+                {
+                  this.errors = errors;
+                  return;
+                }
+            }
+            this.error = true;
         })
         .then(() => {
-          this.loading = false;
+          this.sending = false;
         });
     },
   },

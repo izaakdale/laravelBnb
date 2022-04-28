@@ -20,8 +20,13 @@ class ReviewController extends Controller
         $data = $request->validate([
             'id' => 'required|size:36',
             'content' => 'required|min:2',
-            'rating' => 'required|in:1,2,3,4,5',
+            'rating' => 'required|in:0,1,2,3,4,5',
         ]);
+
+        if($data['errors'])
+        {
+            abort(422, 'Invalid data sent');
+        }
         
         $booking = Booking::findByReviewKey($data['id']);
 

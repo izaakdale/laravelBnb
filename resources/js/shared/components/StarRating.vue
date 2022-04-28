@@ -43,7 +43,7 @@ export default {
 <style scoped>
 
     .star-review{
-        text-shadow: 3px 3px 8px #bdbdbd;
+        text-shadow: 3px 3px 4px #6a6a6a;
     }
 
 </style>
