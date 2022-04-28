@@ -23,7 +23,7 @@ class ReviewController extends Controller
             'rating' => 'required|in:0,1,2,3,4,5',
         ]);
 
-        if($data['errors'])
+        if(isset($data['errors']))
         {
             abort(422, 'Invalid data sent');
         }

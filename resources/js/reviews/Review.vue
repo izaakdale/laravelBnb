@@ -111,32 +111,26 @@ export default {
         });
     },
   },
-  created() {
+  async created() {
     this.review.id = this.$route.params.id;
     this.loading = true;
-    const p = axios
-      .get(`/api/reviews/${this.review.id}`)
-      .then((response) => {
-        this.existingReview = response.data.data;
-        this.loading = false;
-      })
-      .catch((error) => {
+
+    try {
+      const result = await axios.get(`/api/reviews/${this.review.id}`);
+      this.existingReview = result.data.data;
+    } catch (error) {
         if (is404(error)) {
-          return axios
-            .get(`/api/bookingByReview/${this.review.id}`)
-            .then((response) => {
-              this.booking = response.data.data;
-            })
-            .catch((error) => {
-              // set this error to fault when the error isn't a 404.
-              // 404 errors are thrown by the backend when the review or booking is not found
-              this.error = !is404(error);
-            });
+          try {
+            const result = await axios.get(`/api/bookingByReview/${this.review.id}`);
+            this.booking = result.data.data;
+          } catch (error) {
+            // set this error to fault when the error isn't a 404.
+            // 404 errors are thrown by the backend when the review or booking is not found
+            this.error = !is404(error);
+          }
         }
-      })
-      .then(() => {
-        this.loading = false;
-      });
+    }
+    this.loading = false;
   },
   computed: {
     hasReview() {
