@@ -1,6 +1,9 @@
 <template>
   <div>
     <fatal-error v-if="error"></fatal-error>
+    <success v-else-if="success">
+      Review submitted
+    </success>
     <div class="row" v-else>
       <div :class="[{ 'col-md-8': twoColumns }, { 'd-md-12': oneColumn }]">
         <div v-if="loading">loading...</div>
@@ -63,10 +66,12 @@
 </template>
 
 <script>
+import Success from '../shared/components/Success.vue';
 import { is404, is422 } from "../shared/utils/response";
 import validationErrors from "./../shared/mixins/validationErrors.js"
 
 export default {
+  components: { Success },
   mixins: [validationErrors],
   data() {
     return {
@@ -80,6 +85,7 @@ export default {
       error: false,
       sending: false,
       loading: false,
+      success: null,
     };
   },
   methods: {
@@ -88,11 +94,12 @@ export default {
     },
     submit() {
       this.errors = null;
+      this.success = null;
       this.sending = true;
       const p = axios
         .post(`/api/reviews/`, this.review)
-        .then((response) => {
-          console.log(response);
+        .then(response => {
+          this.success = 201 === response.status;
         })
         .catch((error) => {
             if(is422(error)){

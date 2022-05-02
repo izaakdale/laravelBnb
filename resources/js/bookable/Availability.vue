@@ -57,6 +57,7 @@ export default {
         check(){
             this.loading = true;
             this.status = null;
+            this.errors = null;
             axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
             .then(response => {
                 this.status = response.status;
