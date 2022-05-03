@@ -43,18 +43,23 @@ import validationErrors from "../shared/mixins/validationErrors"
 export default {
     mixins: [validationErrors],
     props: {
-        bookableId: String,
+        bookableId: [String, Number],
     },
     data() {
         return {
-            from: null,
-            to: null,
+            from: this.$store.state.lastSearch.from,
+            to: this.$store.state.lastSearch.to,
             status: null,
             loading: false,
         }
     },
     methods: {
         check(){
+            this.$store.dispatch('setLastSearch', {
+                from : this.from,
+                to : this.to,
+            });
+
             this.loading = true;
             this.status = null;
             this.errors = null;
@@ -70,6 +75,12 @@ export default {
             })
             .then(() => (this.loading = false));
         },
+    },
+    beforeCreate() {
+        if(!this.$store.state.lastSearch.from)
+        {
+            this.$store.commit('setFromToday');
+        }
     },
     computed: {
         hasErrors(){

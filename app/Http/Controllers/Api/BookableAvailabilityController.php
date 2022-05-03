@@ -17,7 +17,7 @@ class BookableAvailabilityController extends Controller
     public function __invoke($id, Request $request)
     {
         $data = $request->validate([
-            'from' => 'required|date|after:now',
+            'from' => 'required|date|after:yesterday',
             'to' => 'required|date|after:from',
         ]);
 
