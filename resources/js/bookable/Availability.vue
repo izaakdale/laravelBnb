@@ -3,10 +3,12 @@
         <h6 class="text-uppercase text-secondary font-weight-bolder">
             Availability checker
         </h6>
-        <h6>
-            <span v-if="isAvailable" class="text-success">Available for booking</span>
-            <span v-if="notAvailable" class="text-danger">Listing not available for selected dates</span>
-        </h6>
+        <transition name="fade">
+            <h6 v-if="isAvailable" class="text-success">Available for booking</h6>
+        <!-- </transition> -->
+        <!-- <transition name="fade"> -->
+            <h6 v-else-if="notAvailable" class="text-danger">Listing not available for selected dates</h6>        
+        </transition>
         <div class="form row">
             <div class="form-group col-md-6">
                 <label for="from">From</label>
@@ -31,17 +33,21 @@
                 <v-errors :errors="errorFor('to')"></v-errors>
             </div>
         </div>
-            <button @click="check" class="btn btn-outline-secondary mt-3 col-md-12" :disabled="loading">Check</button>
+            <button @click="check" class="btn btn-outline-secondary mt-3 col-md-12" :disabled="loading">
+                <span v-if="!loading">Check</span>
+                <span v-if="loading"><i class="fa-solid fa-arrows-spin fa-spin"></i> Checking...</span>
+            </button>
         </div>
     <div>
     </div>
 </template>
 
 <script>
-import { is422} from "../shared/utils/response"
+import { is422 } from "../shared/utils/response"
 import validationErrors from "../shared/mixins/validationErrors"
 export default {
     mixins: [validationErrors],
+    emits: ["availability"],
     props: {
         bookableId: [String, Number],
     },
@@ -54,7 +60,7 @@ export default {
         }
     },
     methods: {
-        check(){
+        async check(){
             this.$store.dispatch('setLastSearch', {
                 from : this.from,
                 to : this.to,
@@ -63,17 +69,30 @@ export default {
             this.loading = true;
             this.status = null;
             this.errors = null;
-            axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
-            .then(response => {
-                this.status = response.status;
-            })
-            .catch(error => {
+
+            try {
+                this.status = (await axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)).status;
+            } catch (error) {
                 if(is422(error)){
                     this.errors = error.response.data.errors;
                 }
                 this.status = error.response.status;
-            })
-            .then(() => (this.loading = false));
+                
+            }
+            this.loading = false;
+            this.$emit("availability", this.isAvailable)
+
+            // axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
+            // .then(response => {
+            //     this.status = response.status;
+            // })
+            // .catch(error => {
+            //     if(is422(error)){
+            //         this.errors = error.response.data.errors;
+            //     }
+            //     this.status = error.response.status;
+            // })
+            // .then(() => (this.loading = false));
         },
     },
     beforeCreate() {

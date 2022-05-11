@@ -18,7 +18,18 @@
         <review-list :bookableId="this.$route.params.id"></review-list>
         </div>
         <div class="col-md-4 pb-4">
-            <availability :bookableId="this.$route.params.id"></availability>
+            <availability 
+            :bookableId="this.$route.params.id" 
+            @availability="checkPrice($event)"
+            class="mb-4"
+            ></availability>
+
+            <transition name="fade">
+                <div>
+                    <price-breakdown class="mt-3" v-if="price" :price="price"></price-breakdown>
+                    <button class="btn btn-outline-secondary mt-3 col-md-12" v-if="price">Book</button>
+                </div>
+            </transition>
         </div>
     </div>
 </template>
@@ -26,16 +37,20 @@
 <script>
 import Availability from "./Availability.vue"
 import ReviewList from "./ReviewList.vue"
+import PriceBreakdown from "./PriceBreakdown.vue"
+import {mapState} from "vuex";
 
 export default {
     components: {
         Availability,
         ReviewList,
+        PriceBreakdown
     },
     data() {
         return {
             bookable : null,
             loading : false,
+            price : null,
         }
     },
     created(){
@@ -45,5 +60,24 @@ export default {
             this.loading = false;
         });
     },
+    methods: {
+        async checkPrice(availability)
+        {
+            if(false == availability)
+            {
+                $this.price = null;
+                return;
+            }
+
+            try {
+                this.price = (await axios.get(`/api/bookables/${this.bookable.id}/price?from=${this.lastSearch.from}&to=${this.lastSearch.to}`)).data.data;
+            } catch (error) {
+                
+            }
+        },
+    },
+    computed: mapState({
+            lastSearch: "lastSearch"
+    }),
 }
 </script>
