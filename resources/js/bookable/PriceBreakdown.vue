@@ -1,17 +1,33 @@
 <template>
     <div>
-        <h6 class="text-uppercase text-secondary font-weight-bolder">
+        <h6 class="text-uppercase text-secondary priceBold">
             Price breakdown
         </h6>
 
-        <div class="font-weight-bold">
-            Number of days:         {{ price.breakdown.num_days }}
+        <div class="d-flex priceSpace">
+            <span>
+                Per day
+            </span>
+            <span>
+                {{ price.breakdown.num_days }} x ${{ price.breakdown.price_per_day }}
+            </span>
         </div>
-        <div>
-            Price per day:          ${{ price.breakdown.price_per_day }}
+        <div class="d-flex priceSpace">
+            <span>
+                Estimated taxes
+            </span>
+            <span>
+                ${{price.total * 0.12}}
+            </span>
         </div>
-
-        <div class="font-weight-bolder">Total ${{price.total}}</div>
+        <div class="priceBold d-flex priceSpace">
+            <span>
+                Total
+            </span>
+            <span>
+                ${{price.total * 1.12}}
+            </span>
+        </div>
     </div>
 </template>
 
@@ -22,3 +38,15 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+
+.priceSpace {
+    justify-content: space-between;
+}
+
+.priceBold {
+    font-weight: bold;
+}
+
+</style>

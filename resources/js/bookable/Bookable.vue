@@ -21,13 +21,27 @@
             <availability 
             :bookableId="this.$route.params.id" 
             @availability="checkPrice($event)"
-            class="mb-4"
             ></availability>
 
             <transition name="fade">
-                <div>
-                    <price-breakdown class="mt-3" v-if="price" :price="price"></price-breakdown>
-                    <button class="btn btn-outline-secondary mt-3 col-md-12" v-if="price">Book</button>
+                <div v-if="price" >
+                    <price-breakdown class="mt-3" :price="price"></price-breakdown>
+                    <button class="btn btn-outline-secondary mt-3 col-md-12" 
+                    @click="addToBasket"
+                    :disabled="inBasket"
+                    >Book</button>
+                </div>
+            </transition>
+            
+            <transition name="fade">
+                <div v-if="inBasket">            
+                    <button class="btn btn-outline-secondary mt-3 col-md-12" 
+                    @click="removeFromBasket"
+                    >Remove from basket</button>
+
+                    <div class="mt-4 text-muted warning">
+                        Item added...
+                    </div>
                 </div>
             </transition>
         </div>
@@ -75,9 +89,37 @@ export default {
                 
             }
         },
+        addToBasket()
+        {
+            this.$store.commit("addToBasket", {
+                bookable: this.bookable,
+                price: this.price,
+                dates: this.lastSearch,
+            });
+        },
+        removeFromBasket()
+        {
+            this.$store.commit("removeFromBasket", this.bookable.id);
+        }
     },
-    computed: mapState({
-            lastSearch: "lastSearch"
-    }),
+    computed: {
+        ...mapState({
+            lastSearch: "lastSearch",
+        }),
+        inBasket() {
+            if(null === this.bookable){
+                return false;
+            }
+
+            return this.$store.getters.inBasket(this.bookable.id);
+        }
+    }
 }
 </script>
+
+<style scoped>
+.warning {
+    font-size: 0.75rem;
+    color: darkred;
+}
+</style>

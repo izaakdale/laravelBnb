@@ -3,6 +3,11 @@
         <nav class="navbar bg-white border-bottom navbar-light">
             <router-link class="navbar-brand ms-3 me-auto" :to="{ name: 'Home' }">Home</router-link>
             <router-link class="btn nav-button me-3" :to="{ name: 'Bookables' }">Bookables Page</router-link>
+            <router-link class="btn nav-button me-3" :to="{ name: 'Home' }">Basket
+                <transition name="fade">
+                    <span class="badge basket badge-primary" v-if="itemsInBasket">{{ itemsInBasket }}</span>
+                </transition>
+            </router-link>
         </nav>
 
         <div class="container mt-4 mb-4 p-3">
@@ -12,7 +17,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 export default {
     data()
     {
@@ -24,6 +29,17 @@ export default {
         ...mapState({
             lastSearchComputed: "lastSearch"
         }),
+        ...mapGetters({
+            itemsInBasket: "itemsInBasket"
+        })
     }
 }
 </script>
+
+<style scoped>
+
+.basket {
+    background-color: grey;
+}
+
+</style>
