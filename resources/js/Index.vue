@@ -3,7 +3,7 @@
         <nav class="navbar bg-white border-bottom navbar-light">
             <router-link class="navbar-brand ms-3 me-auto" :to="{ name: 'Home' }">Home</router-link>
             <router-link class="btn nav-button me-3" :to="{ name: 'Bookables' }">Bookables Page</router-link>
-            <router-link class="btn nav-button me-3" :to="{ name: 'Home' }">Basket
+            <router-link class="btn nav-button me-3" :to="{ name: 'Basket' }">Basket
                 <transition name="fade">
                     <span class="badge basket badge-primary" v-if="itemsInBasket">{{ itemsInBasket }}</span>
                 </transition>
