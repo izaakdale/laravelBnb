@@ -7,7 +7,6 @@ export default {
     },
     state: {
         lastSearch: {
-            // today: new Date(),this.today.getYear() + "-" + this.today.getMonth() + "-" + this.today.getDay(),
             from: null,
             to: null,
         },
@@ -57,6 +56,10 @@ export default {
             commit('removeFromBasket', payload);
             localStorage.setItem('basket', JSON.stringify(state.basket));
         },
+        clearBasket({commit, state}, payload){
+            commit('setBasket', {items: []});
+            localStorage.setItem('basket', JSON.stringify(state.basket));
+        }
     },
     getters: {
         itemsInBasket: (state) => state.basket.items.length,
