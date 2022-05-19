@@ -4,12 +4,12 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-6 form-group">
-                        <label for="firstNames">First Names</label>
-                        <input class="form-control" type="text" name="firstNames" id="firstNames">
+                        <label for="first_names">First Names</label>
+                        <input class="form-control" type="text" name="first_names" id="first_names">
                     </div>
                     <div class="col-md-6">
-                        <label for="firstNames">Last Name</label>
-                        <input class="form-control" type="text" name="LastName" id="LastName">
+                        <label for="last_name">Last Name</label>
+                        <input class="form-control" type="text" name="last_name" id="last_name">
                     </div>
                 </div>
                 <div class="row">

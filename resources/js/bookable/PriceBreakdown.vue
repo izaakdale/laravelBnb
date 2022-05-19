@@ -12,20 +12,12 @@
                 {{ price.breakdown.num_days }} x ${{ price.breakdown.price_per_day }}
             </span>
         </div>
-        <div class="d-flex priceSpace">
-            <span>
-                Estimated taxes
-            </span>
-            <span>
-                ${{price.total * 0.12}}
-            </span>
-        </div>
         <div class="priceBold d-flex priceSpace">
             <span>
                 Total
             </span>
             <span>
-                ${{price.total * 1.12}}
+                ${{price.total}}
             </span>
         </div>
     </div>
