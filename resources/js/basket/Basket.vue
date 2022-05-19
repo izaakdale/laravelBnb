@@ -1,52 +1,57 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8" v-if="itemsInBasket">
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label for="first_names">First Names</label>
-                        <input class="form-control" type="text" name="first_names" id="first_names">
+                        <input class="form-control" type="text" name="first_names" v-model="customer.first_names">
                     </div>
                     <div class="col-md-6">
                         <label for="last_name">Last Name</label>
-                        <input class="form-control" type="text" name="last_name" id="last_name">
+                        <input class="form-control" type="text" name="last_name" v-model="customer.last_name">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <label for="Email">Email</label>
-                        <input class="form-control" type="text" name="email" id="email">
+                        <input class="form-control" type="text" name="email" v-model="customer.email">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <label for="street">Street</label>
-                        <input class="form-control" type="text" name="street" id="street">
+                        <input class="form-control" type="text" name="street" v-model="customer.street">
                     </div>
                     <div class="col-md-6">
                         <label for="city">City</label>
-                        <input class="form-control" type="text" name="city" id="city">
+                        <input class="form-control" type="text" name="city" v-model="customer.city">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-2">
                         <label for="state">State</label>
-                        <input class="form-control" type="text" name="state" id="state">
+                        <input class="form-control" type="text" name="state" v-model="customer.state">
                     </div>
                     <div class="col-md-6">
                         <label for="country">Country</label>
-                        <input class="form-control" type="text" name="country" id="country">
+                        <input class="form-control" type="text" name="country" v-model="customer.country">
                     </div>
                     <div class="col-md-4">
                         <label for="zipcode">Zip</label>
-                        <input class="form-control" type="text" name="zipcode" id="zipcode">
+                        <input class="form-control" type="text" name="zipcode" v-model="customer.zipcode">
                     </div>
                 </div>
                 <hr>
                 <div class="row">
                     <div class="d-grid gap-2 form-group">
-                        <button type="button" class="btn btn-secondary">Book</button>
+                        <button type="button" class="btn btn-secondary" @click="book">Book</button>
                     </div>
+                </div>
+            </div>
+            <div v-else class="col-md-8">
+                <div class="jumbotron jumbotron-fluid text-center">
+                    <h2>Empty</h2>
                 </div>
             </div>
             <div class="col-md-4">
@@ -92,13 +97,49 @@
 
 <script>
 import {mapGetters, mapState} from "vuex";
+import validationErrors from "./../shared/mixins/validationErrors";
 
 export default {
+    mixins: [
+        validationErrors,
+    ],
     computed: {
         ...mapGetters(["itemsInBasket"]),
         ...mapState({
             basket: state => state.basket.items,
         })
+    },
+    methods: {
+        async book() {
+            this.loading = true;
+            try {
+                await axios.post(`/api/checkout`, {
+                    bookings: this.basket.map(basketItem => ({
+                        bookable_id: basketItem.bookable.id,
+                        from: basketItem.dates.from,
+                        to: basketItem.dates.to,
+                    })),
+                    customer: this.customer
+                })
+            } catch (error) {
+                
+            }
+            this.loading = false;
+        }
+    },
+    data() {
+        return {
+            customer: {
+                first_names : null,
+                last_name : null,
+                email : null,
+                street : null,
+                city : null,
+                state : null,
+                country : null,
+                zipcode : null
+            }
+        }
     }
 }
 </script>
