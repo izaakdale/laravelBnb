@@ -46,6 +46,7 @@
 
 <script>
 import validationErrors from '../shared/mixins/validationErrors'
+import { utilLogin, utilLogout } from "../shared/utils/auth";
 export default {
     mixins : [validationErrors],
     data() {
@@ -67,12 +68,14 @@ export default {
                     email: this.email,
                     password: this.password,
                 });
-                await axios.get('/user');
+                
+                utilLogin();
+                this.$store.dispatch("loadUser");
+                this.$router.push({name: "Home"});
 
             } catch (error) {
                 this.errors = error.response && error.response.data.errors
             }
-
 
             this.loading = false;
         }

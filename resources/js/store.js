@@ -1,4 +1,5 @@
 import { last } from "lodash";
+import { isLoggedIn, utilLogout } from "./shared/utils/auth";
 
 export default {    
     
@@ -32,7 +33,13 @@ export default {
         },
         setBasket(state, payload){
             state.basket = payload;
-        }
+        },
+        setUser(state, payload){
+            state.user = payload;
+        },
+        setLoggedIn(state, payload){
+            state.isLoggedIn = payload;
+        },
     },
     actions: {
         setLastSearch(context, payload){
@@ -61,6 +68,22 @@ export default {
         clearBasket({commit, state}, payload){
             commit('setBasket', {items: []});
             localStorage.setItem('basket', JSON.stringify(state.basket));
+        },
+        async loadUser({commit, dispatch}){
+            if(isLoggedIn()){
+                try {
+                    const user = (await axios.get('/user')).data;
+                    commit('setUser', user);
+                    commit('setLoggedIn', true);
+                } catch (error) {
+                    dispatch("logout");
+                }
+            }
+        },
+        logout(commit){
+            commit('setUser', {});
+            commit('setLoggedIn', false);
+            utilLogout();
         }
     },
     getters: {
