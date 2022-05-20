@@ -4,6 +4,7 @@ import Bookable from "./bookable/Bookable.vue"
 import Home from "./home/Home.vue"
 import Review from "./reviews/Review.vue"
 import Basket from "./basket/Basket.vue"
+import Login from "./auth/Login.vue"
 
 const routes = [
     {
@@ -30,6 +31,11 @@ const routes = [
         path: "/basket",
         component: Basket,
         name: "Basket"
+    },
+    {
+        path: "/auth/login",
+        component: Login,
+        name: "Login"
     }
 ];
 
